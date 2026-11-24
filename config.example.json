@@ -1,0 +1,10 @@
+{
+  "cookie_secure": false,
+  "token_expire_minutes": 480,
+  "dias_alerta_caducidad": 90,
+  "telegram_mode": "polling",
+  "telegram_allowed_chat_ids": "",
+  "ollama_url": "http://localhost:11434/api/generate",
+  "ollama_model": "llama3",
+  "ollama_timeout": 180
+}

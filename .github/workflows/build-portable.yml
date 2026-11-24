@@ -1,0 +1,61 @@
+name: Build portable releases
+
+on:
+  workflow_dispatch: {}
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            artifact: SIFARH-windows-portable
+            exe: SIFARH.exe
+          - os: ubuntu-latest
+            artifact: SIFARH-linux-portable
+            exe: SIFARH
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar dependencias de compilación
+        run: pip install -r requirements-build.txt
+
+      - name: Compilar con PyInstaller
+        run: pyinstaller SIFARH.spec
+
+      - name: Armar paquete portable
+        shell: bash
+        run: |
+          pkg="release/${{ matrix.artifact }}"
+          mkdir -p "$pkg"
+          cp "dist/${{ matrix.exe }}" "$pkg/"
+          cp .env.example "$pkg/.env.example"
+          cp config.example.json "$pkg/config.json"
+          cat > "$pkg/LEEME.txt" <<'EOF'
+          SIFARH - programa portable
+          ===========================
+
+          1. Copia .env.example a .env y pon tu LICENSE_KEY (ver "Mis descargas" en el sitio).
+          2. Revisa config.json si quieres cambiar algo (Telegram, Ollama, etc.).
+          3. Ejecuta el programa (SIFARH.exe en Windows, ./SIFARH en Linux).
+             Abre http://127.0.0.1:8000 en tu navegador.
+          4. La primera vez necesita internet para validar la licencia. Luego funciona
+             sin conexión hasta 30 días.
+
+          Todo lo que genera el programa (base de datos, caché de licencia) se guarda en
+          una carpeta "data" junto al ejecutable. No hace falta instalar nada más.
+          EOF
+          chmod +x "$pkg/${{ matrix.exe }}" || true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: release/${{ matrix.artifact }}

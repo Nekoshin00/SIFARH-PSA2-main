@@ -1,0 +1,4 @@
+# Solo necesario para compilar el .exe (ver README > Compilar).
+# No es una dependencia de ejecución.
+-r requirements.txt
+pyinstaller>=6.0
