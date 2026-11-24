@@ -46,6 +46,7 @@ jobs:
           1. Copia .env.example a .env y pon tu LICENSE_KEY (ver "Mis descargas" en el sitio).
           2. Revisa config.json si quieres cambiar algo (Telegram, Ollama, etc.).
           3. Ejecuta el programa (SIFARH.exe en Windows, ./SIFARH en Linux).
+             En Linux, primero da permiso de ejecución: chmod +x SIFARH
              Abre http://127.0.0.1:8000 en tu navegador.
           4. La primera vez necesita internet para validar la licencia. Luego funciona
              sin conexión hasta 30 días.
@@ -59,3 +60,4 @@ jobs:
         with:
           name: ${{ matrix.artifact }}
           path: release/${{ matrix.artifact }}
+          include-hidden-files: true
