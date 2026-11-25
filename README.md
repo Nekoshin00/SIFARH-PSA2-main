@@ -71,6 +71,10 @@ pip install -r requirements-build.txt
 pyinstaller SIFARH.spec
 ```
 
+El flujo de GitHub Actions compila el ejecutable Linux para Rocky Linux 9 x86_64 dentro de un contenedor
+`rockylinux:9`. Para compilarlo manualmente con esa misma compatibilidad, ejecuta los comandos anteriores
+en Rocky Linux 9 x86_64.
+
 El resultado queda en `dist/SIFARH.exe` (o `dist/SIFARH` en Linux/macOS). Para distribuirlo, copia junto al
 ejecutable:
 
